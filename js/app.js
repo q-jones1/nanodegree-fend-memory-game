@@ -1,19 +1,27 @@
 /*
     Attribution to:
     http://stackoverflow.com/a/2450976 for the shuffle function(already in the udacity project starter code). https://developer.mozilla.org/en-US/docs/Web/API/Window/alert - for base learning of the alert message method.
+    https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/hidden - for the exact syntax(udacity course content - just advised that hidden is good to reduce DOM reflows).
 */
 
 const CARDS = ["fa fa-diamond","fa fa-paper-plane-o","fa fa-anchor","fa fa-bolt","fa fa-cube","fa fa-anchor","fa fa-leaf","fa fa-bicycle","fa fa-diamond","fa fa-bomb","fa fa-leaf","fa fa-bomb","fa fa-bolt","fa fa-bicycle","fa fa-paper-plane-o","fa fa-cube"];
 const DECK = document.querySelector('.deck');
+const DISPLAY_MOVES = document.querySelector('.moves');
+const STARS = document.querySelector('.stars');
+const RESTART = document.querySelector('.restart');
 
 let LIST1 = [];
 let LIST2 = [];
 let POSITION1;
 let POSITION2;
 let MOVES = Number();
-let DISPLAY_MOVES = document.querySelector('.moves');
-let STARS = document.querySelector('.stars');
 
+function startGame() {
+  shuffle(CARDS);
+  layoutCards();
+}
+
+// Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(CARDS) {
     var currentIndex = CARDS.length, temporaryValue, randomIndex;
 
@@ -42,7 +50,42 @@ function layoutCards() {
     fragment.appendChild(LIST_ITEM);
   };
   DECK.appendChild(fragment);
+  RESTART.addEventListener('click', clearDeck);
   DECK.addEventListener('click', lastTurn);
+}
+
+function clearDeck() {
+  DECK.hidden = true;
+  while (DECK.firstChild) {
+  DECK.removeChild(DECK.firstChild);
+} DECK.hidden = false;
+  clearStars();
+};
+
+function clearStars() {
+  STARS.hidden = true;
+  while (STARS.firstChild) {
+  STARS.removeChild(STARS.firstChild);
+} STARS.hidden = false;
+  newStars();
+};
+
+function newStars() {
+  const fragment = document.createDocumentFragment();
+
+  for (let i = 0; i < 3; i++) {
+    const LIST_ITEM = document.createElement('li');
+    LIST_ITEM.classList.add('card');
+    const STARICON = document.createElement('i');
+    STARICON.setAttribute('class', 'fa fa-star');
+
+    LIST_ITEM.appendChild(STARICON);
+    fragment.appendChild(LIST_ITEM);
+  };
+  STARS.appendChild(fragment);
+  MOVES = 0;
+  DISPLAY_MOVES.innerHTML = MOVES;
+  startGame();
 }
 
 function lastTurn(evt) {
@@ -102,5 +145,4 @@ function starRating() {
 };
 }
 
-shuffle(CARDS);
-layoutCards();
+startGame();
