@@ -7,6 +7,11 @@ const CARDS = ["fa fa-diamond","fa fa-paper-plane-o","fa fa-anchor","fa fa-bolt"
 
 const DECK = document.querySelector('.deck');
 
+let LIST1 = [];
+let LIST2 = [];
+let POSITION1;
+let POSITION2;
+
 function shuffle(CARDS) {
     var currentIndex = CARDS.length, temporaryValue, randomIndex;
 
@@ -35,27 +40,48 @@ function layoutCards() {
     fragment.appendChild(LIST_ITEM);
   };
   DECK.appendChild(fragment);
+  DECK.addEventListener('click', lastTurn);
 }
 
 function lastTurn(evt) {
   if (evt.target.nodeName === 'li'); {
+    POSITION1 = evt.target;
     evt.target.classList.add('open','show');
     let CARD1 = evt.target.firstChild.className;
     DECK.removeEventListener('click', lastTurn);
-    console.log(CARD1);
+    LIST1.push(CARD1);
     DECK.addEventListener('click', nextTurn);
   };
 }
 
 function nextTurn(evt) {
   if (evt.target.nodeName === 'li'); {
+    POSITION2 = evt.target;
     evt.target.classList.add('open','show');
     let CARD2 = evt.target.firstChild.className;
     DECK.removeEventListener('click', nextTurn);
-    console.log(CARD2);
+    LIST2.push(CARD2);
+    compareCards();
   };
+}
+
+function compareCards() {
+  if (LIST1[0] === LIST2[0]) {
+    POSITION1.classList.add('match');
+    POSITION2.classList.add('match');
+    LIST1.pop(LIST1[0]);
+    LIST2.pop(LIST2[0]);
+    DECK.addEventListener('click', lastTurn);
+  } else {
+    POSITION1.classList.remove('open','show');
+    setTimeout(function delayedRemove() {
+    POSITION2.classList.remove('open','show');
+  }, 500);
+  LIST1.pop(LIST1[0]);
+  LIST2.pop(LIST2[0]);
+  DECK.addEventListener('click', lastTurn);
+};
 }
 
 shuffle(CARDS);
 layoutCards();
-DECK.addEventListener('click', lastTurn);
