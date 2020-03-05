@@ -11,6 +11,9 @@ let LIST1 = [];
 let LIST2 = [];
 let POSITION1;
 let POSITION2;
+let MOVES = Number();
+let DISPLAY_MOVES = document.querySelector('.moves');
+let STARS = document.querySelector('.stars');
 
 function shuffle(CARDS) {
     var currentIndex = CARDS.length, temporaryValue, randomIndex;
@@ -47,6 +50,8 @@ function lastTurn(evt) {
   if (evt.target.nodeName === 'li'); {
     POSITION1 = evt.target;
     evt.target.classList.add('open','show');
+    MOVES += 1;
+    DISPLAY_MOVES.innerHTML = MOVES;
     let CARD1 = evt.target.firstChild.className;
     DECK.removeEventListener('click', lastTurn);
     LIST1.push(CARD1);
@@ -55,14 +60,16 @@ function lastTurn(evt) {
 }
 
 function nextTurn(evt) {
-  if (evt.target.nodeName === 'li'); {
+  if (evt.target.className === 'card'); {
     POSITION2 = evt.target;
     evt.target.classList.add('open','show');
+    MOVES += 1;
+    DISPLAY_MOVES.innerHTML = MOVES;
     let CARD2 = evt.target.firstChild.className;
     DECK.removeEventListener('click', nextTurn);
     LIST2.push(CARD2);
     compareCards();
-  };
+  }
 }
 
 function compareCards() {
