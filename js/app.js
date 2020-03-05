@@ -52,6 +52,7 @@ function lastTurn(evt) {
     evt.target.classList.add('open','show');
     MOVES += 1;
     DISPLAY_MOVES.innerHTML = MOVES;
+    starRating();
     let CARD1 = evt.target.firstChild.className;
     DECK.removeEventListener('click', lastTurn);
     LIST1.push(CARD1);
@@ -65,6 +66,7 @@ function nextTurn(evt) {
     evt.target.classList.add('open','show');
     MOVES += 1;
     DISPLAY_MOVES.innerHTML = MOVES;
+    starRating();
     let CARD2 = evt.target.firstChild.className;
     DECK.removeEventListener('click', nextTurn);
     LIST2.push(CARD2);
@@ -87,6 +89,15 @@ function compareCards() {
   LIST1.pop(LIST1[0]);
   LIST2.pop(LIST2[0]);
   DECK.addEventListener('click', lastTurn);
+};
+}
+
+function starRating() {
+  if (MOVES > 6 && MOVES < 9) {
+    STARS.firstElementChild.firstElementChild.classList.remove('fa-star');
+  } if (MOVES > 9 && MOVES < 12) {STARS.firstElementChild.firstElementChild.classList.add('fa-star');}
+  else {
+    console.log("Howdy");
 };
 }
 
