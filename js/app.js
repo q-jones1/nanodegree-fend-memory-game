@@ -41,6 +41,8 @@ function flipCards() {
   DECK.addEventListener('click', function (evt) {
     if (evt.target.nodeName === 'li'); {
       evt.target.classList.add('open','show');
+      let LASTCARD = evt.target.firstChild.className;
+      console.log(LASTCARD);
     }
   });
 }
