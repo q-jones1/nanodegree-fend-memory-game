@@ -36,3 +36,9 @@ for (let i = 0; i < CARDS.length; i++) {
 }
 
 DECK.appendChild(fragment);
+
+DECK.addEventListener('click', function (evt) {
+  if (evt.target.nodeName === 'li'); {
+    evt.target.classList.add('open','show');
+  }
+});
