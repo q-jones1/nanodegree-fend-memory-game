@@ -1,10 +1,9 @@
 /*
     Attribution to:
-    http://stackoverflow.com/a/2450976 for the shuffle function(already in the udacity project starter code).
+    http://stackoverflow.com/a/2450976 for the shuffle function(already in the udacity project starter code). https://developer.mozilla.org/en-US/docs/Web/API/Window/alert - for base learning of the alert message method.
 */
 
-const CARDS = ["fa fa-diamond","fa fa-paper-plane-o","fa fa-anchor","fa fa-bolt","fa fa-cube","fa fa-anchor","fa fa-leaf","fa fa-bicycle","fa fa-diamond","fa fa-bomb","fa fa-leaf","fa fa-bomb","fa fa-bolt","fa fa-bicycle","fa fa-paper-plane-o","fa fa-cube"]
-
+const CARDS = ["fa fa-diamond","fa fa-paper-plane-o","fa fa-anchor","fa fa-bolt","fa fa-cube","fa fa-anchor","fa fa-leaf","fa fa-bicycle","fa fa-diamond","fa fa-bomb","fa fa-leaf","fa fa-bomb","fa fa-bolt","fa fa-bicycle","fa fa-paper-plane-o","fa fa-cube"];
 const DECK = document.querySelector('.deck');
 
 let LIST1 = [];
@@ -47,7 +46,7 @@ function layoutCards() {
 }
 
 function lastTurn(evt) {
-  if (evt.target.nodeName === 'li'); {
+  if (evt.target.className === 'card') {
     POSITION1 = evt.target;
     evt.target.classList.add('open','show');
     MOVES += 1;
@@ -57,11 +56,12 @@ function lastTurn(evt) {
     DECK.removeEventListener('click', lastTurn);
     LIST1.push(CARD1);
     DECK.addEventListener('click', nextTurn);
-  };
+  } else {alert('Please choose an unturned card!');
+};
 }
 
 function nextTurn(evt) {
-  if (evt.target.className === 'card'); {
+  if (evt.target.className === 'card') {
     POSITION2 = evt.target;
     evt.target.classList.add('open','show');
     MOVES += 1;
@@ -71,7 +71,8 @@ function nextTurn(evt) {
     DECK.removeEventListener('click', nextTurn);
     LIST2.push(CARD2);
     compareCards();
-  }
+  } else {alert('Please choose an unturned card!');
+};
 }
 
 function compareCards() {
@@ -93,11 +94,11 @@ function compareCards() {
 }
 
 function starRating() {
-  if (MOVES > 6 && MOVES < 9) {
-    STARS.firstElementChild.firstElementChild.classList.remove('fa-star');
-  } if (MOVES > 9 && MOVES < 12) {STARS.firstElementChild.firstElementChild.classList.add('fa-star');}
-  else {
-    console.log("Howdy");
+  if (MOVES === 28) {
+    STARS.firstElementChild.remove();
+  } if (MOVES === 32) {STARS.firstElementChild.remove();
+  } if (MOVES === 36) {STARS.firstElementChild.remove();
+  } else {
 };
 }
 
