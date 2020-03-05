@@ -37,16 +37,25 @@ function layoutCards() {
   DECK.appendChild(fragment);
 }
 
-function flipCards() {
-  DECK.addEventListener('click', function (evt) {
-    if (evt.target.nodeName === 'li'); {
-      evt.target.classList.add('open','show');
-      let LASTCARD = evt.target.firstChild.className;
-      console.log(LASTCARD);
-    }
-  });
+function lastTurn(evt) {
+  if (evt.target.nodeName === 'li'); {
+    evt.target.classList.add('open','show');
+    let CARD1 = evt.target.firstChild.className;
+    DECK.removeEventListener('click', lastTurn);
+    console.log(CARD1);
+    DECK.addEventListener('click', nextTurn);
+  };
+}
+
+function nextTurn(evt) {
+  if (evt.target.nodeName === 'li'); {
+    evt.target.classList.add('open','show');
+    let CARD2 = evt.target.firstChild.className;
+    DECK.removeEventListener('click', nextTurn);
+    console.log(CARD2);
+  };
 }
 
 shuffle(CARDS);
 layoutCards();
-flipCards();
+DECK.addEventListener('click', lastTurn);
