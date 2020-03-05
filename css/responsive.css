@@ -17,27 +17,27 @@
     padding: 15px;
   }
   .deck .card {
-  border: 5px solid #02ccba;
+    border: 5px solid #02ccba;
   }
   .deck .card.show {
-      font-size: 18px;
+    font-size: 18px;
   }
 
   .deck .card.match {
-      font-size: 18px;
+    font-size: 18px;
   }
 }
 
 @media screen and (min-width:264px) and (max-width:433px) {
   .deck .card {
-  border: 5px solid #02ccba;
+    border: 5px solid #02ccba;
   }
   .deck .card.show {
-      font-size: 23px;
+    font-size: 23px;
   }
 
   .deck .card.match {
-      font-size: 23px;
+    font-size: 23px;
   }
 }
 
