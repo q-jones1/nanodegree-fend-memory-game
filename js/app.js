@@ -5,6 +5,9 @@
 
 const CARDS = ["fa fa-diamond","fa fa-paper-plane-o","fa fa-anchor","fa fa-bolt","fa fa-cube","fa fa-anchor","fa fa-leaf","fa fa-bicycle","fa fa-diamond","fa fa-bomb","fa fa-leaf","fa fa-bomb","fa fa-bolt","fa fa-bicycle","fa fa-paper-plane-o","fa fa-cube"]
 
+const fragment = document.createDocumentFragment();
+const DECK = document.querySelector('.deck');
+
 function shuffle(CARDS) {
     var currentIndex = CARDS.length, temporaryValue, randomIndex;
 
@@ -16,7 +19,20 @@ function shuffle(CARDS) {
         CARDS[randomIndex] = temporaryValue;
     }
 
-    console.log(CARDS);
+    return CARDS;
 }
 
 shuffle(CARDS);
+
+for (let i = 0; i < CARDS.length; i++) {
+  const LIST_ITEM = document.createElement('li');
+  LIST_ITEM.classList.add('card');
+  const CARDICON = document.createElement('i');
+  let SELECTED_CARD = CARDS[i];
+  CARDICON.setAttribute('class', SELECTED_CARD);
+
+  LIST_ITEM.appendChild(CARDICON);
+  fragment.appendChild(LIST_ITEM);
+}
+
+DECK.appendChild(fragment);
