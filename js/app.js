@@ -20,8 +20,8 @@ const GAME_TIME = document.querySelector('.game-time');
 
 let cardList1 = [];
 let cardList2 = [];
-let cardPosition1;
-let cardPosition2;
+let cardPosition1 = 0;
+let cardPosition2 = 0;
 let moveNum = Number();
 let secondCount;
 let setTimer;
@@ -53,7 +53,7 @@ function showTimer() {
 }
 
 function shuffle(CARDS) {
-    var currentIndex = CARDS.length, temporaryValue, randomIndex;
+    let currentIndex = CARDS.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -140,7 +140,7 @@ function compareCards() {
 
 function endGame() {
   const GAME_STATE = document.querySelectorAll('.match');
-  if (GAME_STATE.length === 2) {
+  if (GAME_STATE.length === 4) {
     clearTimeout(setTimer);
     congratsScreen();} else {
   DECK.addEventListener('click', lastTurn);
@@ -155,18 +155,24 @@ STAR_TOTAL.innerHTML = ("    " + STAR_NUMBER);
 GAME_TIME.innerHTML = "    " + hours + " Hours, " + minutes + " Minutes and " + seconds + " Seconds.";
 // click the restart button, to close the modal and start the game again.
 PLAY_AGAIN.addEventListener('click', function() {
-CONGRATS_MODAL.style.display = 'none';
+  CONGRATS_MODAL.style.display = "none";
   clearDeck();
 });
 }
 
 function clearDeck() {
+  if (cardPosition1.className === 'card open show') {
+    cardPosition1.classList.remove('open','show');
+    cardList1.pop(cardList1[0]);
+    DECK.removeEventListener('click', nextTurn);
+  };
+  clearTimeout(setTimer);
   DECK.hidden = true;
   while (DECK.firstChild) {
   DECK.removeChild(DECK.firstChild);
 } DECK.hidden = false;
   clearStars();
-};
+}
 
 function clearStars() {
   STARS.hidden = true;
