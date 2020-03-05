@@ -1,28 +1,55 @@
 /*
-    Attribution to:
-    http://stackoverflow.com/a/2450976 for the shuffle function(already in the udacity project starter code). https://developer.mozilla.org/en-US/docs/Web/API/Window/alert - for base learning of the alert message method.
+    Attribution to the following reference sites:
+    http://stackoverflow.com/a/2450976 - for the shuffle function(already in the udacity project starter code.)
+    https://developer.mozilla.org/en-US/docs/Web/API/Window/alert - for base learning of the alert message method.
     https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/hidden - for the exact syntax(udacity course content - just advised that hidden is good to reduce DOM reflows).
+    https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Timeouts_and_intervals - for base learning on how to create a timer using setTimeout.
     https://css-tricks.com/considerations-styling-modal/ - for base learning on how to create a simple modal box.
 */
 
 const CARDS = ["fa fa-diamond","fa fa-paper-plane-o","fa fa-anchor","fa fa-bolt","fa fa-cube","fa fa-anchor","fa fa-leaf","fa fa-bicycle","fa fa-diamond","fa fa-bomb","fa fa-leaf","fa fa-bomb","fa fa-bolt","fa fa-bicycle","fa fa-paper-plane-o","fa fa-cube"];
 const DECK = document.querySelector('.deck');
-const DISPLAY_MOVES = document.querySelector('.moves');
+const MOVES_TOTAL = document.querySelector('.moves');
+const TIMER = document.querySelector('.clock');
 const STARS = document.querySelector('.stars');
 const RESTART = document.querySelector('.restart-mid-game');
 const CONGRATS_MODAL = document.querySelector('.congrats-modal');
 const PLAY_AGAIN = document.querySelector('.play-again');
 const STAR_TOTAL = document.querySelector('.stars-total');
+const GAME_TIME = document.querySelector('.game-time');
 
-let LIST1 = [];
-let LIST2 = [];
-let POSITION1;
-let POSITION2;
-let MOVES = Number();
+let cardList1 = [];
+let cardList2 = [];
+let cardPosition1;
+let cardPosition2;
+let moveNum = Number();
+let secondCount;
+let setTimer;
+let hours;
+let minutes;
+let seconds;
 
 function startGame() {
+  secondCount = 0;
+  showTimer();
   shuffle(CARDS);
   layoutCards();
+}
+
+function showTimer() {
+  // Calculate current hours, minutes, and seconds and display a timer
+  let h = Math.floor(secondCount/3600);
+  let m = Math.floor((secondCount % 3600)/60);
+  let s = Math.floor(secondCount % 60)
+  // Add a leading zero if the values are less than ten
+  hours = (h < 10) ? '0' + h : h;
+  minutes = (m < 10) ? '0' + m : m;
+  seconds = (s < 10) ? '0' + s : s;
+  // Add the timer into the score panel area
+  TIMER.innerHTML = hours + ':' + minutes + ':' + seconds;
+  // Increment the second counter by one and set the timer going.
+  secondCount++;
+  setTimer = setTimeout(showTimer, 1000);
 }
 
 function shuffle(CARDS) {
@@ -59,11 +86,11 @@ function layoutCards() {
 
 function lastTurn(evt) {
   if (evt.target.className === 'card') {
-    POSITION1 = evt.target;
+    cardPosition1 = evt.target;
     evt.target.classList.add('open','show');
     let CARD1 = evt.target.firstChild.className;
     DECK.removeEventListener('click', lastTurn);
-    LIST1.push(CARD1);
+    cardList1.push(CARD1);
     DECK.addEventListener('click', nextTurn);
   } else {alert('Please choose an unturned card!');
 };
@@ -71,50 +98,61 @@ function lastTurn(evt) {
 
 function nextTurn(evt) {
   if (evt.target.className === 'card') {
-    POSITION2 = evt.target;
+    cardPosition2 = evt.target;
     evt.target.classList.add('open','show');
-    MOVES += 1;
-    DISPLAY_MOVES.innerHTML = MOVES;
+    moveNum += 1;
+    MOVES_TOTAL.innerHTML = moveNum;
     starRating();
     let CARD2 = evt.target.firstChild.className;
     DECK.removeEventListener('click', nextTurn);
-    LIST2.push(CARD2);
+    cardList2.push(CARD2);
     compareCards();
   } else {alert('Please choose an unturned card!');
 };
 }
 
+function starRating() {
+  if (moveNum === 14) {
+    STARS.firstElementChild.remove();
+  } if (moveNum === 17) {STARS.firstElementChild.remove();
+  } if (moveNum === 20) {STARS.firstElementChild.remove();
+  } else {
+};
+}
+
 function compareCards() {
-  if (LIST1[0] === LIST2[0]) {
-    POSITION1.classList.add('match');
-    POSITION2.classList.add('match');
-    LIST1.pop(LIST1[0]);
-    LIST2.pop(LIST2[0]);
+  if (cardList1[0] === cardList2[0]) {
+    cardPosition1.classList.add('match');
+    cardPosition2.classList.add('match');
+    cardList1.pop(cardList1[0]);
+    cardList2.pop(cardList2[0]);
     endGame();
   } else {
-    POSITION1.classList.remove('open','show');
+    cardPosition1.classList.remove('open','show');
     setTimeout(function delayedRemove() {
-    POSITION2.classList.remove('open','show');
+    cardPosition2.classList.remove('open','show');
   }, 500);
-  LIST1.pop(LIST1[0]);
-  LIST2.pop(LIST2[0]);
+  cardList1.pop(cardList1[0]);
+  cardList2.pop(cardList2[0]);
   DECK.addEventListener('click', lastTurn);
 };
 }
 
 function endGame() {
-  let GAME_STATE = document.querySelectorAll('.match');
+  const GAME_STATE = document.querySelectorAll('.match');
   if (GAME_STATE.length === 2) {
-  congratsScreen()} else {
+    clearTimeout(setTimer);
+    congratsScreen();} else {
   DECK.addEventListener('click', lastTurn);
 }
 }
 
 function congratsScreen() {
-let STAR_NUMBER = document.querySelectorAll('.fa-star').length;
 // open the congratulations screen(modal).
 CONGRATS_MODAL.style.display = "block";
-STAR_TOTAL.innerHTML = ('     ' + STAR_NUMBER);
+let STAR_NUMBER = document.querySelectorAll('.fa-star').length;
+STAR_TOTAL.innerHTML = ("    " + STAR_NUMBER);
+GAME_TIME.innerHTML = "    " + hours + " Hours, " + minutes + " Minutes and " + seconds + " Seconds.";
 // click the restart button, to close the modal and start the game again.
 PLAY_AGAIN.addEventListener('click', function() {
 CONGRATS_MODAL.style.display = 'none';
@@ -151,18 +189,9 @@ function newStars() {
     fragment.appendChild(LIST_ITEM);
   };
   STARS.appendChild(fragment);
-  MOVES = 0;
-  DISPLAY_MOVES.innerHTML = MOVES;
+  moveNum = 0;
+  MOVES_TOTAL.innerHTML = moveNum;
   startGame();
-}
-
-function starRating() {
-  if (MOVES === 14) {
-    STARS.firstElementChild.remove();
-  } if (MOVES === 17) {STARS.firstElementChild.remove();
-  } if (MOVES === 20) {STARS.firstElementChild.remove();
-  } else {
-};
 }
 
 startGame();
