@@ -5,7 +5,6 @@
 
 const CARDS = ["fa fa-diamond","fa fa-paper-plane-o","fa fa-anchor","fa fa-bolt","fa fa-cube","fa fa-anchor","fa fa-leaf","fa fa-bicycle","fa fa-diamond","fa fa-bomb","fa fa-leaf","fa fa-bomb","fa fa-bolt","fa fa-bicycle","fa fa-paper-plane-o","fa fa-cube"]
 
-const fragment = document.createDocumentFragment();
 const DECK = document.querySelector('.deck');
 
 function shuffle(CARDS) {
@@ -22,23 +21,30 @@ function shuffle(CARDS) {
     return CARDS;
 }
 
-shuffle(CARDS);
+function layoutCards() {
+  const fragment = document.createDocumentFragment();
 
-for (let i = 0; i < CARDS.length; i++) {
-  const LIST_ITEM = document.createElement('li');
-  LIST_ITEM.classList.add('card');
-  const CARDICON = document.createElement('i');
-  let SELECTED_CARD = CARDS[i];
-  CARDICON.setAttribute('class', SELECTED_CARD);
+  for (let i = 0; i < CARDS.length; i++) {
+    const LIST_ITEM = document.createElement('li');
+    LIST_ITEM.classList.add('card');
+    const CARDICON = document.createElement('i');
+    let SELECTED_CARD = CARDS[i];
+    CARDICON.setAttribute('class', SELECTED_CARD);
 
-  LIST_ITEM.appendChild(CARDICON);
-  fragment.appendChild(LIST_ITEM);
+    LIST_ITEM.appendChild(CARDICON);
+    fragment.appendChild(LIST_ITEM);
+  };
+  DECK.appendChild(fragment);
 }
 
-DECK.appendChild(fragment);
+function flipCards() {
+  DECK.addEventListener('click', function (evt) {
+    if (evt.target.nodeName === 'li'); {
+      evt.target.classList.add('open','show');
+    }
+  });
+}
 
-DECK.addEventListener('click', function (evt) {
-  if (evt.target.nodeName === 'li'); {
-    evt.target.classList.add('open','show');
-  }
-});
+shuffle(CARDS);
+layoutCards();
+flipCards();
